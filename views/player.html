@@ -40,7 +40,7 @@
       // Verifica se a URL está presente
       if (streamingUrl) {
         // Substitui o 'src' da fonte do vídeo com a URL obtida
-        document.querySelector("#video-source").src = `https://proxy-gold-pi.vercel.app/proxy?url=${encodeURIComponent(streamingUrl)}`;
+        document.querySelector("#video-source").src = `https://proxy-gold-pi.vercel.app/hls-proxy?url=${encodeURIComponent(streamingUrl)}`;
 
         // Inicializa o player Video.js
         var player = videojs('my-video', {
