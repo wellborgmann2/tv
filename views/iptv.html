@@ -1144,9 +1144,9 @@ async function download() {
     console.log("Iniciando o download...");
     document.getElementById("progresso").textContent = "Progresso: Iniciando...";
 
-    const proxyUrl = `https://proxy-gold-pi.vercel.app/api/proxy?url=http%3A%2F%2Ftv.com.vc%2Fget.php%3Fusername%3Dmauro123%26password%3Dmauro123%26type%3Dm3u_plus`;
-    const response = await fetch(proxyUrl, { signal , method: "GET",
-    mode: "no-cors"});
+    const proxyUrl = `https://proxy-gold-pi.vercel.app/api/proxy?url=${encodeURIComponent("http://tv.com.vc/get.php?username=mauro123&password=mauro123&type=m3u_plus")}`;
+    
+    const response = await fetch(proxyUrl, { signal });
 
     if (!response.ok) {
       throw new Error(`Erro ao obter respostas: ${response.status} ${response.statusText}`);
@@ -1201,6 +1201,8 @@ async function download() {
     abortController = null; // Resetar controlador após erro
     throw error;
   }
+}
+
 }
 
 
