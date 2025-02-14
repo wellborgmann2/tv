@@ -102,7 +102,7 @@ app.get("/checkuser", async (req, res) => {
 });
 
 app.get("/iptv", (req, res) => {
-    res.sendFile("iptv.html", { root: "views" });
+  res.sendFile(path.join(__dirname, "views", "iptv.html"));
 });
 
 function validadeFormatada(data) {
