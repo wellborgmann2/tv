@@ -1124,7 +1124,18 @@
     <script>
 
 
+   const imagemPadrao =
+        "https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg";
 
+      let linkServer =
+        "http://7vnx.xyz/get.php?username=MarceloDelBiancoCanada&password=n4dcosap&type=m3u_plus";
+
+      let hosts = [
+        "http://cetevos.com/get.php?username=513521132&password=f377340n&type=m3u_plus",
+        "http://tv.com.vc/get.php?username=mauro123&password=mauro123&type=m3u_plus",
+        "http://7go.xyz/get.php?username=15259940617&password=use40617&type=m3u_plus",
+      ];
+      let EMAIL;
 
 
 let abortController = null;
@@ -1144,7 +1155,7 @@ async function download() {
     console.log("Iniciando o download...");
     document.getElementById("progresso").textContent = "Progresso: Iniciando...";
 
-    const proxyUrl = `https://proxy-gold-pi.vercel.app/api/proxy?url=${encodeURIComponent("http://tv.com.vc/get.php?username=mauro123&password=mauro123&type=m3u_plus")}`;
+    const proxyUrl = `https://proxy-gold-pi.vercel.app/api/proxy?url=${encodeURIComponent(linkServer)}`;
     
     const response = await fetch(proxyUrl, { signal });
 
@@ -1596,18 +1607,7 @@ function cleanTitle(title) {
 
 
 
-      const imagemPadrao =
-        "https://t3.ftcdn.net/jpg/05/04/28/96/360_F_504289605_zehJiK0tCuZLP2MdfFBpcJdOVxKLnXg1.jpg";
-
-      let linkServer =
-        "http://7vnx.xyz/get.php?username=MarceloDelBiancoCanada&password=n4dcosap&type=m3u_plus";
-
-      let hosts = [
-        "http://cetevos.com/get.php?username=513521132&password=f377340n&type=m3u_plus",
-        "http://tv.com.vc/get.php?username=mauro123&password=mauro123&type=m3u_plus",
-        "http://7go.xyz/get.php?username=15259940617&password=use40617&type=m3u_plus",
-      ];
-      let EMAIL;
+   
       // const btn1 = document.querySelector("nav > button");
       // btn1.addEventListener("click", () => {
       //   alert("banco limpo");
