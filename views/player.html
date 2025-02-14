@@ -60,7 +60,7 @@
 
         // Define a fonte do vídeo
         player.src({
-          src: `https://proxy-gold-pi.vercel.app/hls-proxy?url=${streamingUrl}`,
+          src: `https://proxy-gold-pi.vercel.app/hls-proxy?url=${encodeURIComponent(streamingUrl)}`,
           type: "application/x-mpegURL",
         });
 
