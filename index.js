@@ -121,11 +121,19 @@ function diferencaEmDias(dataISO) {
 }
 
 app.get('/proxy', async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+
     const { url } = req.query;
     if (!url) {
         return res.status(400).json({ error: "Parâmetro 'url' ausente" });
     }
-    
+
     try {
         const response = await axios({
             method: 'get',
@@ -135,7 +143,6 @@ app.get('/proxy', async (req, res) => {
             headers: { 'User-Agent': 'Mozilla/5.0' }
         });
 
-        // Mantém o mesmo Content-Type da resposta original
         res.setHeader('Content-Type', response.headers['content-type'] || 'application/octet-stream');
 
         await streamPipeline(response.data, res);
@@ -144,6 +151,7 @@ app.get('/proxy', async (req, res) => {
         res.status(500).json({ error: "Erro ao baixar o arquivo" });
     }
 });
+
 
 server.listen(8000, () => {
     console.log("Server is running on http://localhost:8000");
