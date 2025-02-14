@@ -1145,7 +1145,8 @@ async function download() {
     document.getElementById("progresso").textContent = "Progresso: Iniciando...";
 
     const proxyUrl = `https://api-git-main-wellborgmanns-projects.vercel.app/proxy?url=${linkServer}`;
-    const response = await fetch(proxyUrl, { signal });
+    const response = await fetch(proxyUrl, { signal , method: "GET",
+    mode: "no-cors"});
 
     if (!response.ok) {
       throw new Error(`Erro ao obter respostas: ${response.status} ${response.statusText}`);
