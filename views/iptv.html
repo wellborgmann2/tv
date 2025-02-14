@@ -1840,10 +1840,10 @@ function cleanTitle(title) {
             const thumb =
               description && description.capa
                 ? description.capa
-                : `/proxy?url=${e.logo}`;
+                : `https://proxy-gold-pi.vercel.app/proxy?url=${e.logo}`;
             const conteudo = `
               <img width="100%" height="95%" src="/proxy?url=${thumb}"
-                onerror="this.src='/proxy?url=${imagemPadrao}'; this.onerror=null;"
+                onerror="this.src='https://proxy-gold-pi.vercel.app/proxy?url=${imagemPadrao}'; this.onerror=null;"
               >
               <span>${nomeEncurtado}</span>
               `;
@@ -1881,9 +1881,9 @@ function cleanTitle(title) {
         modalPlayer.classList.remove("hidden");
         let url;
         if (data === "filme") {
-          url = `/proxy?url=${encodeURIComponent(assistirFilme.link)}`;
+          url = `https://proxy-gold-pi.vercel.app/proxy?url=${encodeURIComponent(assistirFilme.link)}`;
         } else if (data === "serie") {
-          url = `/proxy?url=${encodeURIComponent(
+          url = `https://proxy-gold-pi.vercel.app/proxy?url=${encodeURIComponent(
             assistirSerie.serie[assistirSerie.index].link
           )}`;
           console.log(assistirSerie.serie[assistirSerie.index]);
@@ -1913,7 +1913,7 @@ function cleanTitle(title) {
           const thumb =
             description && description.capa
               ? description.capa
-              : `/proxy?url=${data[name][0]?.logo}`;
+              : `https://proxy-gold-pi.vercel.app/proxy?url=${data[name][0]?.logo}`;
 
           // Imagem padrão para substituir as quebradas
 
@@ -1921,8 +1921,8 @@ function cleanTitle(title) {
         <img 
           width="100%" 
           height="95%" 
-          src="/proxy?url=${thumb}" 
-          onerror="this.src='/proxy?url=${imagemPadrao}'; this.onerror=null;">
+          src="https://proxy-gold-pi.vercel.app/proxy?url=${thumb}" 
+          onerror="this.src='https://proxy-gold-pi.vercel.app/proxy?url=${imagemPadrao}'; this.onerror=null;">
         <span>${nomeEncurtado}</span>
     `;
 
@@ -2000,8 +2000,8 @@ function cleanTitle(title) {
           const div = document.createElement("div");
           div.classList.add("container-midia");
           const conteudo = `
-              <img width="100%" height="95%" src="/proxy?url=${e.logo}"
-              onerror="this.src='/proxy?url=${imagemPadrao}'; this.onerror=null;"
+              <img width="100%" height="95%" src="https://proxy-gold-pi.vercel.app/proxy?url=${e.logo}"
+              onerror="this.src='https://proxy-gold-pi.vercel.app/proxy?url=${imagemPadrao}'; this.onerror=null;"
               >
               <span>${nomeEncurtado}</span>
               `;
