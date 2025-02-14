@@ -10,9 +10,9 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/moviedb.js?v=5.1"></script>
-    <script src="/download.js?v=5.1"></script>
+
+    <script src="/moviedb.js?v=5.3"></script>
+    <script src="/download.js?v=5.3"></script>
 
     <title>ApolloFlix</title>
   </head>
@@ -1239,7 +1239,7 @@
         if (!assistirSerie) {
           return;
         }
-        socket.emit("transmitir", assistirSerie);
+      
       });
 
       let typeMidia = "filme";
@@ -1537,7 +1537,7 @@
             console.log(e);
 
             let convert = btoa(e.link);
-            convert = `https://internet20.com.br/proxy?email=${EMAIL}&&url=${convert}`;
+            convert = `https://internet20.com.br/live?email=${EMAIL}&&url=${convert}`;
             console.log(convert);
             //copiar(convert);
             const modal = document.querySelector(".modal-tv > div");
@@ -1563,7 +1563,7 @@
             buttonTransmitir.textContent = "TRANSMITIR";
             buttonTransmitir.addEventListener("click", () => {
               e.tv = true;
-              socket.emit("transmitir", e);
+             
             });
             modal.innerHTML = "";
             modal.appendChild(buttonCopiar);
@@ -1749,50 +1749,19 @@
         }
       }
 
-      const socket = io();
+   
       btnTransmitirFilme.addEventListener("click", () => {
-        socket.emit("transmitir", assistirFilme);
+   
         console.log("transmitir", assistirFilme);
       });
 
-      socket.on("reproduzir", (response) => {
-        console.log("reproduzir", response)
-        //alert(JSON.stringify(response));
-        assistirFilme = "";
-        assistirSerie = "";
-        telaCheia();
-        console.log("transmissão recebida", response);
-        if (
-          typeof response.index !== "undefined" &&
-          Array.isArray(response.serie)
-        ) {
-          assistirSerie = response;
-          nomeDoFilme.textContent =
-            assistirSerie.serie[assistirSerie.index].name;
-          reproduzir("serie");
-          return;
-        }
-        if (response.tv) {
-          window.open(
-            `http://157.254.54.238:7000/player?email=${EMAIL}&&url=${btoa(
-              response.link
-            )}`,
-            "_blank"
-          );
-          return;
-        }
-        assistirFilme = response;
-        nomeDoFilme.textContent = assistirFilme.name;
-        reproduzir("filme");
-      });
+ 
 
       function telaCheia() {
         video.classList.add("full");
       }
 
-      socket.on("user-email", (response) => {
-        EMAIL = response;
-      });
+
       // document.documentElement.style.setProperty(
       //     "--hero-background",
       //     `url(${info.fundo})`
@@ -1897,12 +1866,7 @@
         }
 
         if (toggle) {
-          socket.emit("redefinir-senha", senha1, (response) => {
-            if (response) {
-              label.textContent = "Senha alterada com sucesso!";
-              labalTexto();
-            }
-          });
+
         } else {
           label.textContent = "As senhas não coincidem";
           labalTexto();
@@ -1989,40 +1953,17 @@
       video.addEventListener("timeupdate", () => {
         range.value = (video.currentTime / video.duration) * 100;
 
-        socket.emit("range-sync", {
-          range: range.value,
-          video: [video.currentTime, video.duration],
-        });
+       
       });
 
       range.addEventListener("input", () => {
-        socket.emit("range", range.value);
+     
       });
 
-      socket.on("range-response", (position) => {
-        const novaPosicao = (position / 100) * video.duration;
-
-        video.currentTime = novaPosicao;
-      });
+ 
       let timeoutId;
 
-      socket.on("range-sync-response", (position) => {
-        range.value = position.range;
-        controleRemoto.classList.add("active");
-        const valor = (position.video[0] / position.video[1]) * 100 + 2;
-        document.querySelector(
-          ".range-container > span"
-        ).style.width = `${valor}%`;
-        const inicio = converterSegundos(position.video[1]);
-        const final = converterSegundos(position.video[0]);
-        spanInicio.textContent = inicio;
-        spanFinal.textContent = final;
-        document.querySelector("#play-remoto > img").src = "pause.png";
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          document.querySelector("#play-remoto > img").src = "play.png";
-        }, 2000);
-      });
+
 
       document.querySelector(".closeControll").addEventListener("click", () => {
         controleRemoto.classList.remove("active");
@@ -2052,7 +1993,7 @@
             (spanEpisodios.indexOf(spanAtivada) + 1) % spanEpisodios.length;
           spanEpisodios[nextIndex].classList.add("active");
         }
-        socket.emit("proximo-episodio");
+     
       });
 
       btnAnteriorEp.addEventListener("click", () => {
@@ -2067,89 +2008,34 @@
             spanEpisodios.length;
           spanEpisodios[prevIndex].classList.add("active");
         }
-        socket.emit("episodio-anterior");
+       
       });
 
-      socket.on("proximo-episodio-response", () => {
-        if (assistirSerie.index === assistirSerie.serie.length) return;
-        assistirSerie.index++;
-        console.log("proximo", assistirSerie.index);
-        reproduzir("serie");
-      });
 
-      socket.on("episodio-anterior-response", () => {
-        if (assistirSerie.index === 0) return;
-        assistirSerie.index--;
-      });
+
 
       playRemoto.addEventListener("click", () => {
         console.log("reqrqrqrqrqrqqrrq");
-        socket.emit("play-pause");
+
       });
 
       let playPause = false;
-      socket.on("play-pause-response", () => {
-        if (isPlaying()) {
-          console.log("video em andamento");
-          video.pause();
-        } else {
-          console.log("video em pausado");
-          video.play();
-        }
-      });
+
 
       function isPlaying() {
         return !video.paused && !video.ended && video.readyState > 2;
       }
 
       fullscreen.addEventListener("click", () => {
-        socket.emit("fullscreen");
+    
       });
 
-      socket.on("fullscreen-response", () => {
-        // Verifica se já está em fullscreen
-        if (!document.fullscreenElement) {
-          // Tenta entrar no fullscreen
-          try {
-            if (video.requestFullscreen) {
-              video.requestFullscreen(); // Para navegadores que suportam requestFullscreen
-            } else if (video.webkitRequestFullscreen) {
-              video.webkitRequestFullscreen(); // Safari
-            } else if (video.mozRequestFullScreen) {
-              video.mozRequestFullScreen(); // Firefox
-            } else if (video.msRequestFullscreen) {
-              video.msRequestFullscreen(); // IE/Edge
-            }
-          } catch (err) {
-            alert("Erro ao tentar entrar em fullscreen: " + err.message);
-          }
-        } else {
-          // Tenta sair do fullscreen
-          try {
-            if (document.exitFullscreen) {
-              document.exitFullscreen(); // Para navegadores que suportam exitFullscreen
-            } else if (document.webkitExitFullscreen) {
-              document.webkitExitFullscreen(); // Safari
-            } else if (document.mozCancelFullScreen) {
-              document.mozCancelFullScreen(); // Firefox
-            } else if (document.msExitFullscreen) {
-              document.msExitFullscreen(); // IE/Edge
-            }
-          } catch (err) {
-            alert("Erro ao tentar sair do fullscreen: " + err.message);
-          }
-        }
-      });
-
+     
       btnGerarPix.addEventListener("click", () => {
-        socket.emit("gerarPix", (response) => {
-          window.open(response.url, "_blank");
-        });
+       
       });
 
-      socket.emit("validade", (res) => {
-        document.getElementById("validade").textContent = `Validae: ${res}`;
-      });
+
 
   
     </script>
