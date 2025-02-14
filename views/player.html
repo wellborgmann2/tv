@@ -5,67 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Video.js Example</title>
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-    <style></style>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .video-js {
+        width: 100%;
+        max-width: 800px;
+        min-height: 500px;
+      }
+      .back {
+        cursor: pointer;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .video-js {
-      width: 100%;
-      min-height: 500px;
-    }
-  </style>
   <body>
-    <nav><div class="back">Voltar</div></nav>
+    <nav><div class="back" onclick="window.history.back()">Voltar</div></nav>
     <video
       id="my-video"
       class="video-js vjs-default-skin"
       controls
       preload="auto"
-    >
-      <source id="video-source" src="" type="application/x-mpegURL" />
-      Your browser does not support the video tag.
-    </video>
+    ></video>
 
     <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
     <script>
-      // Captura o valor da URL dos parâmetros da URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const streamingUrl = urlParams.get("url"); // Obtém o valor do parâmetro 'url'
-      const email = urlParams.get("email"); 
-      // Verifica se a URL está presente
-      if (streamingUrl) {
-        // Substitui o 'src' da fonte do vídeo com a URL obtida
-        document.querySelector("#video-source").src = `https://proxy-gold-pi.vercel.app/hls-proxy?url=${streamingUrl}`;
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const streamingUrl = urlParams.get("url");
 
-        // Inicializa o player Video.js
-        var player = videojs('my-video', {
-  techOrder: ['html5'],
-  html5: {
-    hls: {
-      withCredentials: false, // Certifique-se de que está configurado corretamente
-    }
-  }
-});
+        if (!streamingUrl) {
+          alert("Nenhuma URL fornecida.");
+          console.error("Nenhuma URL fornecida.");
+          return;
+        }
+
+        const player = videojs("my-video", {
+          controls: true,
+          preload: "auto",
+          html5: {
+            hls: { withCredentials: false }
+          }
+        });
+
+        // Define a fonte do vídeo
+        player.src({
+          src: `https://proxy-gold-pi.vercel.app/hls-proxy?url=${streamingUrl}`,
+          type: "application/x-mpegURL",
+        });
 
         player.on("error", function () {
-          console.error("Ocorreu um erro ao carregar o vídeo.");
+          console.error("Erro ao carregar o vídeo.");
+          alert("Ocorreu um erro ao carregar o vídeo.");
         });
 
         player.on("loadedmetadata", function () {
           console.log("O vídeo está carregado e pronto para ser exibido.");
         });
 
-        player.on("readyforplay", function () {
+        player.on("canplay", function () {
           console.log("O vídeo está pronto para reprodução.");
         });
-      } else {
-        console.error("Nenhuma URL fornecida.");
-      }
+      });
     </script>
   </body>
 </html>
