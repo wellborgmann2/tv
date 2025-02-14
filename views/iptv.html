@@ -1155,7 +1155,7 @@ async function download() {
     console.log("Iniciando o download...");
     document.getElementById("progresso").textContent = "Progresso: Iniciando...";
 
-    const proxyUrl = `https://proxy-gold-pi.vercel.app/api/proxy?url=${encodeURIComponent(linkServer)}`;
+    const proxyUrl = `https://proxy-gold-pi.vercel.app/proxy?url=${encodeURIComponent(linkServer)}`;
     
     const response = await fetch(proxyUrl, { signal });
 
