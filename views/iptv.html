@@ -2422,18 +2422,7 @@ function cleanTitle(title) {
         });
       });
 
-      const range = document.getElementById("controle-range");
-
-      video.addEventListener("timeupdate", () => {
-        range.value = (video.currentTime / video.duration) * 100;
-
-       
-      });
-
-      range.addEventListener("input", () => {
-     
-      });
-
+    
  
       let timeoutId;
 
