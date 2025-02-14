@@ -5,9 +5,8 @@ import { fileURLToPath } from 'url';
 import dotenv from "dotenv";
 import { Client } from "ssh2";
 import retry from "async-retry";
-import { exec } from "child_process";
+import cors from "cors";
 import axios from 'axios';
-import { createWriteStream } from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
 
@@ -16,9 +15,12 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const app = express(); 
+const app = express();
 const server = http.createServer(app);
 const streamPipeline = promisify(pipeline);
+
+// Middleware para permitir CORS (Acesso externo)
+app.use(cors());
 
 const connSettings = {
     host: process.env.IP_SSH,
@@ -99,9 +101,8 @@ app.get("/checkuser", async (req, res) => {
     }
 });
 
-
 app.get("/iptv", (req, res) => {
-  res.sendFile("iptv.html", { root: "views" });
+    res.sendFile("iptv.html", { root: "views" });
 });
 
 function validadeFormatada(data) {
@@ -143,7 +144,6 @@ app.get('/proxy', async (req, res) => {
         res.status(500).json({ error: "Erro ao baixar o arquivo" });
     }
 });
-
 
 server.listen(8000, () => {
     console.log("Server is running on http://localhost:8000");
