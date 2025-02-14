@@ -105,6 +105,10 @@ app.get("/iptv", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "iptv.html"));
 });
 
+app.get("/player", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "player.html"));
+});
+
 function validadeFormatada(data) {
     const futuro = new Date(data);
     const dia = futuro.getDate().toString().padStart(2, "0");
